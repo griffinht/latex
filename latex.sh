@@ -5,7 +5,7 @@ if [ -z "$FILE" ]; then
   FILE='*'
 fi
 
-trap 'pdflatex '"$FILE"'.tex && rm -r '"$FILE"'.aux '"$FILE"'.log '"$FILE"'.dvi' SIGINT
+trap 'rm -r '"$FILE"'.aux '"$FILE"'.log '"$FILE"'.dvi' SIGINT
 
 latex $FILE.tex;
 
