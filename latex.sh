@@ -1,12 +1,17 @@
 #!/bin/bash
 
-trap 'pdflatex *.tex && rm *.aux *.log *.dvi' SIGINT
+FILE="$1"
+if [ -z "$FILE" ]; then
+  FILE='*'
+fi
 
-latex *.tex;
+trap 'pdflatex '"$FILE"'.tex && rm -r '"$FILE"'.aux '"$FILE"'.log '"$FILE"'.dvi' SIGINT
+
+latex $FILE.tex;
 
 inotifywait -e close_write -m -r --format %f . | 
   while read -r file; do 
-    if [[ "$file" == *.tex ]]; then
+    if [[ "$file" == $FILE.tex ]]; then
       latex "$file";
     fi;
   done
