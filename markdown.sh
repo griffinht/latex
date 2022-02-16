@@ -5,12 +5,11 @@ if [ -z "$FILE" ]; then
   FILE='*'
 fi
 
-pandoc -i $FILE.md -o $FILE.pdf
-
 inotifywait -e close_write -m -r --format %f . | 
   while read -r file; do 
+    echo "$file"
     if [[ "$file" == $FILE.md ]]; then
-      pandoc -i "$file" -o "$FILE".pdf;
+      pandoc -i "$file" -o "$(echo $file | cut -f 1 -d '.').pdf";
     fi;
   done
 
